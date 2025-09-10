@@ -8,7 +8,7 @@ let candidatesData = [];
 let filteredCandidates = [];
 
 // Googleスプレッドシートの公開URL（後で設定）
-const SPREADSHEET_CSV_URL = 'YOUR_SPREADSHEET_CSV_URL_HERE';
+const SPREADSHEET_CSV_URL = 'https://docs.google.com/spreadsheets/d/17ticqNQf202Qww_0YdprDHnHdXvLDYCEM-rzh2iuBQc/export?format=csv&gid=1238380915';
 
 // DOM要素の取得
 const elements = {
