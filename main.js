@@ -518,7 +518,7 @@ async function fetchSpreadsheetData() {
                 const match = fetchUrl.match(/\/spreadsheets\/d\/([a-zA-Z0-9-_]+)/);
                 if (match) {
                     const spreadsheetId = match[1];
-                    fetchUrl = `https://docs.google.com/spreadsheets/d/${spreadsheetId}/export?format=csv&gid=0`;
+                    fetchUrl = `https://docs.google.com/spreadsheets/d/${spreadsheetId}/export?format=csv&gid=1238380915`;
                 }
             }
         }
