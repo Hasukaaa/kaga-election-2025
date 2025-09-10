@@ -625,6 +625,18 @@ section {
         max-width: none;
     }
     
+    .card-image-wrapper {
+        height: 160px;
+    }
+    
+    .candidate-info {
+        padding: 1rem;
+    }
+    
+    .candidate-name {
+        font-size: 1.1rem;
+    }
+    
     /* モーダル */
     .modal {
         padding: 0.5rem;
@@ -682,11 +694,32 @@ section {
 
 @media (max-width: 480px) {
     .candidate-grid {
-        grid-template-columns: 1fr;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 0.5rem;
     }
     
     .candidate-card {
         max-width: 100%;
+    }
+    
+    .card-image-wrapper {
+        height: 150px;
+    }
+    
+    .candidate-info {
+        padding: 0.75rem;
+    }
+    
+    .candidate-name {
+        font-size: 1rem;
+    }
+    
+    .candidate-details {
+        font-size: 0.75rem;
+    }
+    
+    .candidate-catchphrase {
+        font-size: 0.8rem;
     }
     
     .modal-header {
@@ -706,7 +739,7 @@ section {
 
 
 
-/* ===== 政策比較セクション ===== */
+/* ===== 政策比較セクション（新デザイン） ===== */
 .policy-comparison-section {
     background: #f9fafb;
     border-top: 1px solid #e5e7eb;
@@ -714,10 +747,9 @@ section {
 }
 
 .policy-comparison-container {
-    overflow-x: auto;
-    background: white;
-    border-radius: 12px;
-    box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+    background: transparent;
+    border-radius: 0;
+    box-shadow: none;
 }
 
 .policy-loading {
@@ -726,91 +758,92 @@ section {
     color: #6b7280;
 }
 
-.policy-table {
-    width: 100%;
-    border-collapse: collapse;
-    min-width: 800px;
+/* 政策質問ブロック */
+.policy-question-block {
+    margin-bottom: 2rem;
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+    overflow: hidden;
 }
 
-.policy-table th,
-.policy-table td {
-    padding: 1rem;
-    text-align: left;
-    border-bottom: 1px solid #e5e7eb;
-    vertical-align: top;
-}
-
-.policy-table th {
-    background: #f9fafb;
-    font-weight: 600;
-    color: #374151;
-    position: sticky;
-    top: 0;
-    z-index: 10;
-}
-
-.policy-table th:first-child {
+.policy-question-header {
     background: #2c5aa0;
     color: white;
-    font-weight: 700;
-    min-width: 200px;
+    padding: 1rem 1.5rem;
+    font-weight: 600;
+    font-size: 1.1rem;
 }
 
-.policy-table td:first-child {
+.policy-answers-container {
+    position: relative;
+    overflow: hidden;
+}
+
+.policy-answers-scroll {
+    display: flex;
+    gap: 1rem;
+    padding: 1.5rem;
+    overflow-x: auto;
+    scroll-behavior: smooth;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+}
+
+.policy-answers-scroll::-webkit-scrollbar {
+    display: none;
+}
+
+/* 候補者回答カード */
+.candidate-answer-card {
+    flex: 0 0 250px;
     background: #f9fafb;
+    border-radius: 8px;
+    padding: 1rem;
+    border: 2px solid #e5e7eb;
+    transition: all 0.3s ease;
+}
+
+.candidate-answer-card:hover {
+    border-color: #2c5aa0;
+    transform: translateY(-2px);
+}
+
+.candidate-answer-card:first-child {
+    margin-left: 0;
+}
+
+.candidate-answer-card:last-child {
+    margin-right: 1rem;
+}
+
+.answer-card-header {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin-bottom: 1rem;
+}
+
+.answer-card-photo {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid #e5e7eb;
+}
+
+.answer-card-info {
+    flex: 1;
+}
+
+.answer-card-name {
     font-weight: 600;
-    color: #374151;
-    border-right: 2px solid #e5e7eb;
-}
-
-.policy-stance-cell {
-    text-align: center;
-    min-width: 120px;
-}
-
-.policy-stance-badge {
-    display: inline-block;
-    padding: 0.375rem 0.75rem;
-    border-radius: 20px;
-    font-size: 0.75rem;
-    font-weight: 600;
-    text-align: center;
-    min-width: 80px;
-}
-
-.policy-stance-badge.support {
-    background: #dcfce7;
-    color: #166534;
-}
-
-.policy-stance-badge.oppose {
-    background: #fee2e2;
-    color: #dc2626;
-}
-
-.policy-stance-badge.neutral {
-    background: #f3f4f6;
-    color: #6b7280;
-}
-
-.policy-stance-badge.no-response {
-    background: #fef3c7;
-    color: #92400e;
-}
-
-.candidate-header {
-    text-align: center;
-    padding: 0.75rem 0.5rem;
-}
-
-.candidate-header .candidate-name-small {
-    font-weight: 700;
     color: #111827;
     font-size: 0.9rem;
     margin-bottom: 0.25rem;
 }
 
-.candidate-header .candidate-tag-small {
+.answer-card-tag {
     display: inline-block;
     padding: 0.125rem 0.5rem;
     border-radius: 12px;
@@ -818,45 +851,174 @@ section {
     font-weight: 600;
 }
 
-.candidate-tag-small.incumbent {
+.answer-card-tag.incumbent {
     background: #dbeafe;
     color: #1e40af;
 }
 
-.candidate-tag-small.newcomer {
+.answer-card-tag.newcomer {
     background: #dcfce7;
     color: #166534;
 }
 
+.answer-card-stance {
+    text-align: center;
+}
+
+.answer-stance-badge {
+    display: inline-block;
+    padding: 0.5rem 1rem;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    text-align: center;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.answer-stance-badge.support {
+    background: #dcfce7;
+    color: #166534;
+}
+
+.answer-stance-badge.oppose {
+    background: #fee2e2;
+    color: #dc2626;
+}
+
+.answer-stance-badge.neutral {
+    background: #f3f4f6;
+    color: #6b7280;
+}
+
+.answer-stance-badge.no-response {
+    background: #fef3c7;
+    color: #92400e;
+}
+
+/* スクロールインジケーター */
+.scroll-indicator {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 0.5rem 1.5rem;
+    background: #f9fafb;
+    border-top: 1px solid #e5e7eb;
+    font-size: 0.8rem;
+    color: #6b7280;
+}
+
+.scroll-indicator::before {
+    content: "←";
+    margin-right: 0.5rem;
+    animation: swipeHint 2s infinite;
+}
+
+.scroll-indicator::after {
+    content: "→";
+    margin-left: 0.5rem;
+    animation: swipeHint 2s infinite reverse;
+}
+
+@keyframes swipeHint {
+    0%, 50%, 100% { opacity: 0.3; }
+    25% { opacity: 1; }
+}
+
 /* モバイル対応 */
 @media (max-width: 768px) {
-    .policy-comparison-container {
-        margin: 0 -16px;
-        border-radius: 0;
+    .policy-question-header {
+        padding: 0.75rem 1rem;
+        font-size: 1rem;
     }
     
-    .policy-table th,
-    .policy-table td {
-        padding: 0.75rem 0.5rem;
-        font-size: 0.875rem;
+    .policy-answers-scroll {
+        padding: 1rem;
+        gap: 0.75rem;
     }
     
-    .policy-table th:first-child {
-        min-width: 150px;
+    .candidate-answer-card {
+        flex: 0 0 200px;
+        padding: 0.75rem;
     }
     
-    .policy-stance-cell {
-        min-width: 100px;
+    .answer-card-photo {
+        width: 35px;
+        height: 35px;
     }
     
-    .policy-stance-badge {
-        padding: 0.25rem 0.5rem;
-        font-size: 0.7rem;
-        min-width: 70px;
-    }
-    
-    .candidate-header .candidate-name-small {
+    .answer-card-name {
         font-size: 0.8rem;
     }
+    
+    .answer-stance-badge {
+        padding: 0.375rem 0.75rem;
+        font-size: 0.75rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .candidate-answer-card {
+        flex: 0 0 180px;
+        padding: 0.5rem;
+    }
+    
+    .answer-card-photo {
+        width: 30px;
+        height: 30px;
+    }
+    
+    .answer-card-name {
+        font-size: 0.75rem;
+    }
+    
+    .answer-stance-badge {
+        padding: 0.25rem 0.5rem;
+        font-size: 0.7rem;
+    }
+}
+
+
+/* ===== モバイルアンカー位置調整 ===== */
+html {
+    scroll-padding-top: 120px;
+}
+
+@media (max-width: 768px) {
+    html {
+        scroll-padding-top: 100px;
+    }
+}
+
+@media (max-width: 480px) {
+    html {
+        scroll-padding-top: 90px;
+    }
+}
+
+/* スムーズスクロール */
+html {
+    scroll-behavior: smooth;
+}
+
+/* ナビゲーションリンクの改善 */
+.nav-link {
+    position: relative;
+    transition: all 0.3s ease;
+}
+
+.nav-link:hover {
+    transform: translateY(-1px);
+}
+
+.nav-link.active::after {
+    content: '';
+    position: absolute;
+    bottom: -2px;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: white;
+    border-radius: 1px;
 }
 

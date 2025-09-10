@@ -537,7 +537,7 @@ function hideError() {
 
 
 /**
- * 政策比較テーブルの生成
+ * 政策比較の新しいカード形式での生成
  */
 function generatePolicyComparisonTable() {
     const container = document.getElementById('policy-comparison-container');
@@ -550,64 +550,67 @@ function generatePolicyComparisonTable() {
         return;
     }
     
-    // テーブルの生成
-    const table = document.createElement('table');
-    table.className = 'policy-table';
+    // コンテナをクリア
+    container.innerHTML = '';
     
-    // ヘッダー行の生成
-    const headerRow = document.createElement('tr');
-    
-    // 政策項目列のヘッダー
-    const policyHeader = document.createElement('th');
-    policyHeader.textContent = '政策項目';
-    headerRow.appendChild(policyHeader);
-    
-    // 候補者列のヘッダー
-    candidatesData.forEach(candidate => {
-        const candidateHeader = document.createElement('th');
-        candidateHeader.innerHTML = `
-            <div class="candidate-header">
-                <div class="candidate-name-small">${candidate.name}</div>
-                <span class="candidate-tag-small ${candidate.status === '現職' ? 'incumbent' : 'newcomer'}">
-                    ${candidate.status}
-                </span>
-            </div>
-        `;
-        headerRow.appendChild(candidateHeader);
-    });
-    
-    table.appendChild(headerRow);
-    
-    // 政策項目行の生成
+    // 各政策項目ごとにブロックを生成
     policyItems.forEach(policyItem => {
-        const row = document.createElement('tr');
+        const questionBlock = document.createElement('div');
+        questionBlock.className = 'policy-question-block';
         
-        // 政策項目名
-        const policyCell = document.createElement('td');
-        policyCell.textContent = policyItem;
-        row.appendChild(policyCell);
+        // 質問ヘッダー
+        const questionHeader = document.createElement('div');
+        questionHeader.className = 'policy-question-header';
+        questionHeader.textContent = policyItem;
         
-        // 各候補者のスタンス
+        // 回答コンテナ
+        const answersContainer = document.createElement('div');
+        answersContainer.className = 'policy-answers-container';
+        
+        // スクロール可能な回答エリア
+        const answersScroll = document.createElement('div');
+        answersScroll.className = 'policy-answers-scroll';
+        
+        // 各候補者の回答カードを生成
         candidatesData.forEach(candidate => {
-            const stanceCell = document.createElement('td');
-            stanceCell.className = 'policy-stance-cell';
+            const answerCard = document.createElement('div');
+            answerCard.className = 'candidate-answer-card';
             
             const stance = candidate.policies[policyItem] || '未回答';
             const stanceClass = getStanceClass(stance);
             const stanceText = getStanceDisplayText(stance);
             
-            stanceCell.innerHTML = `
-                <span class="policy-stance-badge ${stanceClass}">${stanceText}</span>
+            answerCard.innerHTML = `
+                <div class="answer-card-header">
+                    <img src="${candidate.photo || 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAiIGhlaWdodD0iNDAiIHZpZXdCb3g9IjAgMCA0MCA0MCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPGNpcmNsZSBjeD0iMjAiIGN5PSIyMCIgcj0iMjAiIGZpbGw9IiNFNUU3RUIiLz4KPHN2ZyB3aWR0aD0iMjQiIGhlaWdodD0iMjQiIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB4PSI4IiB5PSI4Ij4KPHBhdGggZD0iTTEyIDEyQzE0LjIwOTEgMTIgMTYgMTAuMjA5MSAxNiA4QzE2IDUuNzkwODYgMTQuMjA5MSA0IDEyIDRDOS43OTA4NiA0IDggNS43OTA4NiA4IDhDOCAxMC4yMDkxIDkuNzkwODYgMTIgMTIgMTJaIiBmaWxsPSIjOUI5QkEwIi8+CjxwYXRoIGQ9Ik0xMiAxNEM5LjMzIDEzLjk5IDcuMDEgMTUuNzQgNiAxOC4yNEM5LjY3IDE5LjE0IDE0LjMzIDE5LjE0IDE4IDE4LjI0QzE2Ljk5IDE1Ljc0IDE0LjY3IDEzLjk5IDEyIDE0WiIgZmlsbD0iIzlCOUJBMCIvPgo8L3N2Zz4KPC9zdmc+'}" alt="${candidate.name}" class="answer-card-photo">
+                    <div class="answer-card-info">
+                        <div class="answer-card-name">${candidate.name}</div>
+                        <span class="answer-card-tag ${candidate.status === '現職' ? 'incumbent' : 'newcomer'}">
+                            ${candidate.status}
+                        </span>
+                    </div>
+                </div>
+                <div class="answer-card-stance">
+                    <span class="answer-stance-badge ${stanceClass}">${stanceText}</span>
+                </div>
             `;
             
-            row.appendChild(stanceCell);
+            answersScroll.appendChild(answerCard);
         });
         
-        table.appendChild(row);
+        // スクロールインジケーター
+        const scrollIndicator = document.createElement('div');
+        scrollIndicator.className = 'scroll-indicator';
+        scrollIndicator.textContent = '左右にスワイプして他の候補者を確認';
+        
+        answersContainer.appendChild(answersScroll);
+        answersContainer.appendChild(scrollIndicator);
+        
+        questionBlock.appendChild(questionHeader);
+        questionBlock.appendChild(answersContainer);
+        
+        container.appendChild(questionBlock);
     });
-    
-    container.innerHTML = '';
-    container.appendChild(table);
 }
 
 /**
