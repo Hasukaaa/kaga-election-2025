@@ -246,6 +246,9 @@ function displayCandidates() {
         const candidateCard = createCandidateCard(candidate, index);
         elements.candidateGrid.appendChild(candidateCard);
     });
+    
+    // 詳細機能を追加
+    enhanceWithDetailFeatures();
 }
 
 /**
@@ -274,21 +277,7 @@ function createCandidateCard(candidate, index) {
         </div>
     `;
     
-    // クリックイベントの追加
-    card.addEventListener('click', () => {
-        showCandidateDetail(candidate);
-    });
-    
     return card;
-}
-
-/**
- * 候補者詳細の表示（モーダルまたは別ページ）
- */
-function showCandidateDetail(candidate) {
-    // TODO: 候補者詳細表示機能の実装
-    console.log('候補者詳細:', candidate);
-    alert(`${candidate.name}の詳細情報\n\n${candidate.mainPolicy}`);
 }
 
 /**
@@ -735,22 +724,6 @@ function normalizeCandidateDataForDetail(rawData) {
 // 現在の候補者データを保存する変数
 let currentCandidates = [];
 
-/**
- * 候補者カード生成時に詳細データも保存
- */
-function generateCandidateCardsWithDetail(candidates) {
-    // 既存の候補者カード生成処理
-    generateCandidateCards(candidates);
-    
-    // 詳細表示用データを正規化して保存
-    currentCandidates = candidates.map(candidate => normalizeCandidateDataForDetail(candidate));
-    
-    // クリックイベントを追加
-    setTimeout(() => {
-        addCandidateCardClickEvents();
-    }, 100);
-}
-
 // イベントリスナーの設定
 document.addEventListener('DOMContentLoaded', () => {
     // モーダル閉じるボタンのイベント
@@ -776,23 +749,17 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 /**
- * 既存のloadCandidateData関数を拡張
+ * 既存のデータ読み込み後に詳細機能を追加
  */
-const originalLoadCandidateData = loadCandidateData;
-loadCandidateData = async function() {
-    try {
-        const candidates = await fetchSpreadsheetData();
-        if (candidates && candidates.length > 0) {
-            // 詳細表示機能付きで候補者カードを生成
-            generateCandidateCardsWithDetail(candidates);
-            updateCandidateCount(candidates.length);
-            hideLoading();
-        } else {
-            showError('候補者データが見つかりませんでした。');
-        }
-    } catch (error) {
-        console.error('候補者データの読み込みエラー:', error);
-        showError('候補者データの読み込み中にエラーが発生しました。');
+function enhanceWithDetailFeatures() {
+    // 詳細表示用データを正規化して保存
+    if (filteredCandidates && filteredCandidates.length > 0) {
+        currentCandidates = filteredCandidates.map(candidate => normalizeCandidateDataForDetail(candidate));
+        
+        // クリックイベントを追加
+        setTimeout(() => {
+            addCandidateCardClickEvents();
+        }, 100);
     }
-};
+}
 
