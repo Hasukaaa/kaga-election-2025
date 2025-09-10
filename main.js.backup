@@ -766,11 +766,6 @@ function extractPolicyItems() {
     return Array.from(policySet).sort();
 }
 
-
-
-
-
-
 /**
  * スタンスのクラス名を取得
  */
@@ -817,274 +812,49 @@ displayCandidates = function() {
     }, 100);
 };
 
-
-
-// ===== 管理者機能 =====
-
 /**
- * 管理者認証
+ * スタンスのクラス名を取得
  */
-function authenticateAdmin() {
-    const password = prompt('管理者パスワードを入力してください:');
-    if (password === 'kaga2025admin') {
-        showAdminSection();
-        return true;
-    } else if (password !== null) {
-        alert('パスワードが正しくありません。');
+function getStanceClass(stance) {
+    if (!stance || stance === '未回答') return 'no-response';
+    
+    const lowerStance = stance.toLowerCase();
+    if (lowerStance.includes('積極的に推進') || lowerStance.includes('賛成') || lowerStance.includes('支持')) {
+        return 'support';
+    } else if (lowerStance.includes('反対') || lowerStance.includes('慎重')) {
+        return 'oppose';
+    } else {
+        return 'neutral';
     }
-    return false;
 }
 
 /**
- * 管理者セクションを表示
+ * スタンスの表示テキストを取得
  */
-function showAdminSection() {
-    document.querySelector('.admin-link').style.display = 'block';
-    document.getElementById('admin').style.display = 'block';
-    populateCandidateSelector();
-    updateDataStatus();
-}
-
-/**
- * 候補者セレクターを更新
- */
-function populateCandidateSelector() {
-    const select = document.getElementById('candidate-select');
-    select.innerHTML = '<option value="">候補者を選択してください</option>';
+function getStanceDisplayText(stance) {
+    if (!stance || stance === '未回答') return '未回答';
     
-    candidatesData.forEach((candidate, index) => {
-        const option = document.createElement('option');
-        option.value = index;
-        option.textContent = candidate.name;
-        select.appendChild(option);
-    });
-}
-
-/**
- * データステータスを更新
- */
-function updateDataStatus() {
-    document.getElementById('data-last-updated').textContent = new Date().toLocaleString('ja-JP');
-    document.getElementById('data-candidate-count').textContent = candidatesData.length;
-}
-
-/**
- * 管理者タブ切り替え
- */
-function setupAdminTabs() {
-    const tabs = document.querySelectorAll('.admin-tab');
-    const contents = document.querySelectorAll('.admin-tab-content');
-    
-    tabs.forEach(tab => {
-        tab.addEventListener('click', () => {
-            const targetTab = tab.dataset.tab;
-            
-            // タブの状態を更新
-            tabs.forEach(t => t.classList.remove('active'));
-            tab.classList.add('active');
-            
-            // コンテンツの表示を更新
-            contents.forEach(content => {
-                content.classList.remove('active');
-                if (content.id === targetTab) {
-                    content.classList.add('active');
-                }
-            });
-        });
-    });
-}
-
-/**
- * 写真アップロード機能の初期化
- */
-function setupPhotoUpload() {
-    const dropzone = document.getElementById('upload-dropzone');
-    const fileInput = document.getElementById('photo-input');
-    const preview = document.getElementById('photo-preview');
-    const previewImage = document.getElementById('preview-image');
-    
-    // ドラッグ&ドロップ
-    dropzone.addEventListener('dragover', (e) => {
-        e.preventDefault();
-        dropzone.classList.add('dragover');
-    });
-    
-    dropzone.addEventListener('dragleave', () => {
-        dropzone.classList.remove('dragover');
-    });
-    
-    dropzone.addEventListener('drop', (e) => {
-        e.preventDefault();
-        dropzone.classList.remove('dragover');
-        
-        const files = e.dataTransfer.files;
-        if (files.length > 0) {
-            handleFileSelect(files[0]);
-        }
-    });
-    
-    // ファイル選択
-    fileInput.addEventListener('change', (e) => {
-        if (e.target.files.length > 0) {
-            handleFileSelect(e.target.files[0]);
-        }
-    });
-    
-    // クリックでファイル選択
-    dropzone.addEventListener('click', () => {
-        fileInput.click();
-    });
-}
-
-/**
- * ファイル選択処理
- */
-function handleFileSelect(file) {
-    if (!file.type.startsWith('image/')) {
-        showUploadStatus('画像ファイルを選択してください。', 'error');
-        return;
+    // 長いテキストを短縮
+    if (stance.length > 15) {
+        if (stance.includes('積極的に推進')) return '積極推進';
+        if (stance.includes('反対')) return '反対';
+        if (stance.includes('慎重')) return '慎重';
+        return stance.substring(0, 12) + '...';
     }
     
-    if (file.size > 10 * 1024 * 1024) { // 10MB制限
-        showUploadStatus('ファイルサイズが大きすぎます（10MB以下）。', 'error');
-        return;
-    }
-    
-    const reader = new FileReader();
-    reader.onload = (e) => {
-        document.getElementById('preview-image').src = e.target.result;
-        document.getElementById('upload-dropzone').style.display = 'none';
-        document.getElementById('photo-preview').style.display = 'block';
-    };
-    reader.readAsDataURL(file);
+    return stance;
 }
 
 /**
- * 写真プレビューをクリア
+ * displayCandidates関数を拡張して政策比較も更新
  */
-function clearPhotoPreview() {
-    document.getElementById('upload-dropzone').style.display = 'block';
-    document.getElementById('photo-preview').style.display = 'none';
-    document.getElementById('photo-input').value = '';
-    hideUploadStatus();
-}
-
-/**
- * 写真アップロード実行
- */
-function uploadPhoto() {
-    const candidateIndex = document.getElementById('candidate-select').value;
-    const fileInput = document.getElementById('photo-input');
+const originalDisplayCandidates = displayCandidates;
+displayCandidates = function() {
+    originalDisplayCandidates.call(this);
     
-    if (!candidateIndex) {
-        showUploadStatus('候補者を選択してください。', 'error');
-        return;
-    }
-    
-    if (!fileInput.files[0]) {
-        showUploadStatus('写真を選択してください。', 'error');
-        return;
-    }
-    
-    showUploadStatus('アップロード中...', 'loading');
-    
-    // 実際のアップロード処理（デモ版）
+    // 政策比較テーブルも更新
     setTimeout(() => {
-        const candidate = candidatesData[candidateIndex];
-        const file = fileInput.files[0];
-        
-        // 画像をBase64に変換してローカルストレージに保存（デモ用）
-        const reader = new FileReader();
-        reader.onload = (e) => {
-            candidate.photo = e.target.result;
-            
-            // 候補者カードを更新
-            displayCandidates();
-            
-            showUploadStatus(`${candidate.name}の写真をアップロードしました。`, 'success');
-            
-            // プレビューをクリア
-            setTimeout(() => {
-                clearPhotoPreview();
-            }, 2000);
-        };
-        reader.readAsDataURL(file);
-    }, 1500);
-}
-
-/**
- * アップロードステータス表示
- */
-function showUploadStatus(message, type) {
-    const status = document.getElementById('upload-status');
-    status.textContent = message;
-    status.className = `upload-status ${type}`;
-    status.style.display = 'block';
-}
-
-/**
- * アップロードステータス非表示
- */
-function hideUploadStatus() {
-    document.getElementById('upload-status').style.display = 'none';
-}
-
-/**
- * データ再読み込み
- */
-function refreshData() {
-    showUploadStatus('データを再読み込み中...', 'loading');
-    
-    setTimeout(() => {
-        loadCandidateData();
-        populateCandidateSelector();
-        updateDataStatus();
-        showUploadStatus('データを再読み込みしました。', 'success');
-        
-        setTimeout(() => {
-            hideUploadStatus();
-        }, 2000);
-    }, 1000);
-}
-
-/**
- * データエクスポート
- */
-function exportData() {
-    const dataStr = JSON.stringify(candidatesData, null, 2);
-    const dataBlob = new Blob([dataStr], {type: 'application/json'});
-    
-    const link = document.createElement('a');
-    link.href = URL.createObjectURL(dataBlob);
-    link.download = `candidates_data_${new Date().toISOString().split('T')[0]}.json`;
-    link.click();
-    
-    showUploadStatus('データをエクスポートしました。', 'success');
-    setTimeout(() => {
-        hideUploadStatus();
-    }, 2000);
-}
-
-/**
- * 管理者機能の初期化
- */
-function initializeAdminFeatures() {
-    setupAdminTabs();
-    setupPhotoUpload();
-    
-    // 管理者リンクのクリックイベント
-    document.querySelector('.admin-link').addEventListener('click', (e) => {
-        e.preventDefault();
-        if (document.getElementById('admin').style.display === 'none') {
-            authenticateAdmin();
-        } else {
-            document.getElementById('admin').scrollIntoView({ behavior: 'smooth' });
-        }
-    });
-}
-
-// 管理者機能の初期化を追加
-document.addEventListener('DOMContentLoaded', () => {
-    initializeAdminFeatures();
-});
+        generatePolicyComparisonTable();
+    }, 100);
+};
 

@@ -23,9 +23,10 @@
                 <p class="subtitle">私たちの未来を選択する</p>
             </div>
             <nav class="nav">
-                <a href="#candidates" class="nav-link active">候補者一覧</a>
+                <a href="#candidates" class="nav-link">候補者一覧</a>
                 <a href="#policy-comparison" class="nav-link">政策で比較</a>
                 <a href="#voting-info" class="nav-link">投票について</a>
+                <a href="#admin" class="nav-link admin-link" style="display: none;">管理者</a>
             </nav>
         </div>
     </header>
@@ -125,6 +126,73 @@
                         <h3>お問い合わせ</h3>
                         <p><strong>加賀市選挙管理委員会</strong><br>
                         TEL: 0761-72-7935</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Admin section -->
+        <section id="admin" class="admin-section" style="display: none;">
+            <div class="container">
+                <div class="admin-header">
+                    <h2>管理者機能</h2>
+                    <p class="admin-description">候補者写真のアップロードとデータ管理</p>
+                </div>
+
+                <div class="admin-tabs">
+                    <button class="admin-tab active" data-tab="photo-upload">写真アップロード</button>
+                    <button class="admin-tab" data-tab="data-management">データ管理</button>
+                </div>
+
+                <!-- Photo Upload Tab -->
+                <div id="photo-upload" class="admin-tab-content active">
+                    <div class="photo-upload-section">
+                        <h3>候補者写真アップロード</h3>
+                        <div class="upload-form">
+                            <div class="candidate-selector">
+                                <label for="candidate-select">候補者を選択:</label>
+                                <select id="candidate-select" class="form-select">
+                                    <option value="">候補者を選択してください</option>
+                                </select>
+                            </div>
+                            
+                            <div class="photo-upload-area">
+                                <div class="upload-dropzone" id="upload-dropzone">
+                                    <div class="upload-icon">📷</div>
+                                    <p>写真をドラッグ&ドロップまたはクリックして選択</p>
+                                    <input type="file" id="photo-input" accept="image/*" style="display: none;">
+                                    <button type="button" class="upload-btn" onclick="document.getElementById('photo-input').click()">
+                                        ファイルを選択
+                                    </button>
+                                </div>
+                                
+                                <div class="photo-preview" id="photo-preview" style="display: none;">
+                                    <img id="preview-image" src="" alt="プレビュー">
+                                    <div class="preview-actions">
+                                        <button type="button" class="btn-secondary" onclick="clearPhotoPreview()">キャンセル</button>
+                                        <button type="button" class="btn-primary" onclick="uploadPhoto()">アップロード</button>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="upload-status" id="upload-status"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Data Management Tab -->
+                <div id="data-management" class="admin-tab-content">
+                    <div class="data-management-section">
+                        <h3>データ管理</h3>
+                        <div class="data-actions">
+                            <button type="button" class="btn-primary" onclick="refreshData()">データを再読み込み</button>
+                            <button type="button" class="btn-secondary" onclick="exportData()">データをエクスポート</button>
+                        </div>
+                        
+                        <div class="data-status">
+                            <p>最終更新: <span id="data-last-updated">-</span></p>
+                            <p>候補者数: <span id="data-candidate-count">-</span></p>
+                        </div>
                     </div>
                 </div>
             </div>
