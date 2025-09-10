@@ -603,3 +603,196 @@ const SPREADSHEET_CSV_URL = 'https://docs.google.com/spreadsheets/d/YOUR_SHEET_I
     }
 }
 
+
+
+/**
+ * 候補者詳細モーダル機能
+ */
+
+// モーダル要素の取得
+const modal = document.getElementById('candidate-modal');
+const modalClose = document.querySelector('.modal-close');
+
+/**
+ * 候補者詳細モーダルを表示
+ */
+function showCandidateDetail(candidate) {
+    // 基本情報の設定
+    document.getElementById('modal-candidate-name').textContent = candidate.name || '-';
+    document.getElementById('modal-furigana').textContent = candidate.furigana || '-';
+    document.getElementById('modal-age').textContent = candidate.age || '-';
+    document.getElementById('modal-occupation').textContent = candidate.occupation || '-';
+    document.getElementById('modal-district').textContent = candidate.district || '-';
+    document.getElementById('modal-party').textContent = candidate.party || '-';
+    document.getElementById('modal-status').textContent = candidate.status || '-';
+
+    // アピール情報の設定
+    document.getElementById('modal-catchphrase').textContent = candidate.catchphrase || '-';
+    
+    // 公式サイト・SNSの設定（リンク化）
+    const websiteElement = document.getElementById('modal-website');
+    if (candidate.website && candidate.website !== '-' && candidate.website.trim() !== '') {
+        const url = candidate.website.startsWith('http') ? candidate.website : `https://${candidate.website}`;
+        websiteElement.innerHTML = `<a href="${url}" target="_blank" rel="noopener noreferrer">${candidate.website}</a>`;
+    } else {
+        websiteElement.textContent = '-';
+    }
+    
+    // 連絡先の設定（メールリンク化）
+    const contactElement = document.getElementById('modal-contact');
+    if (candidate.contact && candidate.contact !== '-' && candidate.contact.includes('@')) {
+        contactElement.innerHTML = `<a href="mailto:${candidate.contact}">${candidate.contact}</a>`;
+    } else {
+        contactElement.textContent = candidate.contact || '-';
+    }
+
+    // 政策スタンスの設定
+    const policies = [
+        'policy1', 'policy2', 'policy3', 'policy4',
+        'policy5', 'policy6', 'policy7', 'policy8'
+    ];
+    
+    policies.forEach(policy => {
+        const element = document.getElementById(`modal-${policy}`);
+        const stance = candidate[policy] || '-';
+        element.textContent = stance;
+        
+        // 政策スタンスに応じてクラスを設定
+        element.className = 'policy-stance';
+        if (stance.includes('積極的に推進') || stance.includes('賛成')) {
+            element.classList.add('support');
+        } else if (stance.includes('反対') || stance.includes('慎重')) {
+            element.classList.add('oppose');
+        } else if (stance.includes('中立') || stance.includes('どちらとも')) {
+            element.classList.add('neutral');
+        }
+    });
+
+    // 詳細メッセージの設定
+    document.getElementById('modal-main-policy').textContent = candidate.mainPolicy || '-';
+    document.getElementById('modal-vision').textContent = candidate.vision || '-';
+    document.getElementById('modal-message').textContent = candidate.message || '-';
+
+    // モーダルを表示
+    modal.style.display = 'flex';
+    document.body.style.overflow = 'hidden'; // 背景のスクロールを無効化
+}
+
+/**
+ * モーダルを閉じる
+ */
+function closeCandidateModal() {
+    modal.style.display = 'none';
+    document.body.style.overflow = 'auto'; // 背景のスクロールを有効化
+}
+
+/**
+ * 候補者カードにクリックイベントを追加
+ */
+function addCandidateCardClickEvents() {
+    const candidateCards = document.querySelectorAll('.candidate-card');
+    candidateCards.forEach((card, index) => {
+        card.addEventListener('click', () => {
+            if (currentCandidates && currentCandidates[index]) {
+                showCandidateDetail(currentCandidates[index]);
+            }
+        });
+        
+        // カーソルポインターを設定
+        card.style.cursor = 'pointer';
+    });
+}
+
+/**
+ * 候補者データの正規化（詳細表示用）
+ */
+function normalizeCandidateDataForDetail(rawData) {
+    return {
+        name: rawData['氏名'] || '',
+        furigana: rawData['ふりがな'] || '',
+        age: rawData['年代'] || '',
+        occupation: rawData['職業・経歴'] || '',
+        district: rawData['居住地区'] || '',
+        party: rawData['所属政党・会派'] || '',
+        status: rawData['立候補区分'] || '',
+        catchphrase: rawData['キャッチフレーズ・スローガン'] || '',
+        website: rawData['公式サイト・SNSのURL'] || '',
+        contact: rawData['連絡先メールアドレス'] || '',
+        policy1: rawData['政策1: 子育て支援・教育予算の拡充について'] || '',
+        policy2: rawData['政策2: 地域産業（伝統工芸・観光業）の振興について'] || '',
+        policy3: rawData['政策3: 高齢者福祉・医療制度の充実について'] || '',
+        policy4: rawData['政策4: 防災・減災対策の強化について'] || '',
+        policy5: rawData['政策5: 市の財政健全化について'] || '',
+        policy6: rawData['政策6: デジタル化・DX推進について'] || '',
+        policy7: rawData['政策7: 環境保護・脱炭素社会の実現について'] || '',
+        policy8: rawData['政策8: 若者の定住促進・人口減少対策について'] || '',
+        mainPolicy: rawData['最も重視する政策・公約'] || '',
+        vision: rawData['加賀市政への想い・ビジョン'] || '',
+        message: rawData['有権者へのメッセージ'] || ''
+    };
+}
+
+// 現在の候補者データを保存する変数
+let currentCandidates = [];
+
+/**
+ * 候補者カード生成時に詳細データも保存
+ */
+function generateCandidateCardsWithDetail(candidates) {
+    // 既存の候補者カード生成処理
+    generateCandidateCards(candidates);
+    
+    // 詳細表示用データを正規化して保存
+    currentCandidates = candidates.map(candidate => normalizeCandidateDataForDetail(candidate));
+    
+    // クリックイベントを追加
+    setTimeout(() => {
+        addCandidateCardClickEvents();
+    }, 100);
+}
+
+// イベントリスナーの設定
+document.addEventListener('DOMContentLoaded', () => {
+    // モーダル閉じるボタンのイベント
+    if (modalClose) {
+        modalClose.addEventListener('click', closeCandidateModal);
+    }
+    
+    // モーダル背景クリックで閉じる
+    if (modal) {
+        modal.addEventListener('click', (e) => {
+            if (e.target === modal) {
+                closeCandidateModal();
+            }
+        });
+    }
+    
+    // ESCキーでモーダルを閉じる
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && modal.style.display === 'flex') {
+            closeCandidateModal();
+        }
+    });
+});
+
+/**
+ * 既存のloadCandidateData関数を拡張
+ */
+const originalLoadCandidateData = loadCandidateData;
+loadCandidateData = async function() {
+    try {
+        const candidates = await fetchSpreadsheetData();
+        if (candidates && candidates.length > 0) {
+            // 詳細表示機能付きで候補者カードを生成
+            generateCandidateCardsWithDetail(candidates);
+            updateCandidateCount(candidates.length);
+            hideLoading();
+        } else {
+            showError('候補者データが見つかりませんでした。');
+        }
+    } catch (error) {
+        console.error('候補者データの読み込みエラー:', error);
+        showError('候補者データの読み込み中にエラーが発生しました。');
+    }
+};
+

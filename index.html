@@ -127,6 +127,121 @@
         </section>
     </main>
 
+    <!-- 候補者詳細モーダル -->
+    <div id="candidate-modal" class="modal" style="display: none;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="modal-candidate-name">候補者名</h2>
+                <span class="modal-close">&times;</span>
+            </div>
+            <div class="modal-body">
+                <div class="candidate-detail-grid">
+                    <!-- 基本情報 -->
+                    <div class="detail-section">
+                        <h3>基本情報</h3>
+                        <div class="detail-item">
+                            <span class="detail-label">ふりがな:</span>
+                            <span id="modal-furigana">-</span>
+                        </div>
+                        <div class="detail-item">
+                            <span class="detail-label">年代:</span>
+                            <span id="modal-age">-</span>
+                        </div>
+                        <div class="detail-item">
+                            <span class="detail-label">職業・経歴:</span>
+                            <span id="modal-occupation">-</span>
+                        </div>
+                        <div class="detail-item">
+                            <span class="detail-label">居住地区:</span>
+                            <span id="modal-district">-</span>
+                        </div>
+                        <div class="detail-item">
+                            <span class="detail-label">所属政党・会派:</span>
+                            <span id="modal-party">-</span>
+                        </div>
+                        <div class="detail-item">
+                            <span class="detail-label">立候補区分:</span>
+                            <span id="modal-status">-</span>
+                        </div>
+                    </div>
+
+                    <!-- アピール情報 -->
+                    <div class="detail-section">
+                        <h3>アピール情報</h3>
+                        <div class="detail-item">
+                            <span class="detail-label">キャッチフレーズ:</span>
+                            <span id="modal-catchphrase">-</span>
+                        </div>
+                        <div class="detail-item">
+                            <span class="detail-label">公式サイト・SNS:</span>
+                            <span id="modal-website">-</span>
+                        </div>
+                        <div class="detail-item">
+                            <span class="detail-label">連絡先:</span>
+                            <span id="modal-contact">-</span>
+                        </div>
+                    </div>
+
+                    <!-- 政策スタンス -->
+                    <div class="detail-section policy-section">
+                        <h3>政策スタンス</h3>
+                        <div class="policy-grid">
+                            <div class="policy-item">
+                                <span class="policy-label">子育て支援・教育予算の拡充:</span>
+                                <span id="modal-policy1" class="policy-stance">-</span>
+                            </div>
+                            <div class="policy-item">
+                                <span class="policy-label">地域産業の振興:</span>
+                                <span id="modal-policy2" class="policy-stance">-</span>
+                            </div>
+                            <div class="policy-item">
+                                <span class="policy-label">高齢者福祉・医療制度の充実:</span>
+                                <span id="modal-policy3" class="policy-stance">-</span>
+                            </div>
+                            <div class="policy-item">
+                                <span class="policy-label">防災・減災対策の強化:</span>
+                                <span id="modal-policy4" class="policy-stance">-</span>
+                            </div>
+                            <div class="policy-item">
+                                <span class="policy-label">市の財政健全化:</span>
+                                <span id="modal-policy5" class="policy-stance">-</span>
+                            </div>
+                            <div class="policy-item">
+                                <span class="policy-label">デジタル化・DX推進:</span>
+                                <span id="modal-policy6" class="policy-stance">-</span>
+                            </div>
+                            <div class="policy-item">
+                                <span class="policy-label">環境保護・脱炭素社会の実現:</span>
+                                <span id="modal-policy7" class="policy-stance">-</span>
+                            </div>
+                            <div class="policy-item">
+                                <span class="policy-label">若者の定住促進・人口減少対策:</span>
+                                <span id="modal-policy8" class="policy-stance">-</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 詳細メッセージ -->
+                    <div class="detail-section message-section">
+                        <h3>政策・ビジョン</h3>
+                        <div class="message-item">
+                            <h4>最も重視する政策・公約</h4>
+                            <p id="modal-main-policy">-</p>
+                        </div>
+                        <div class="message-item">
+                            <h4>加賀市政への想い・ビジョン</h4>
+                            <p id="modal-vision">-</p>
+                        </div>
+                        <div class="message-item">
+                            <h4>有権者へのメッセージ</h4>
+                            <p id="modal-message">-</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <footer class="footer">
         <div class="container">
             <p>&copy; 2025 加賀市議会選挙特設サイト有志. All rights reserved.</p>

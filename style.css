@@ -464,3 +464,265 @@ a {
     to { opacity: 1; }
 }
 
+
+/* --- Modal Styles --- */
+.modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.7);
+    z-index: 1000;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    box-sizing: border-box;
+}
+
+.modal-content {
+    background: white;
+    border-radius: 12px;
+    max-width: 900px;
+    width: 100%;
+    max-height: 90vh;
+    overflow-y: auto;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+    animation: modalSlideIn 0.3s ease;
+}
+
+@keyframes modalSlideIn {
+    from {
+        opacity: 0;
+        transform: translateY(-50px) scale(0.9);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+.modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 24px 30px;
+    border-bottom: 1px solid #e5e7eb;
+    background: linear-gradient(135deg, #1e40af 0%, #3b82f6 100%);
+    color: white;
+    border-radius: 12px 12px 0 0;
+}
+
+.modal-header h2 {
+    margin: 0;
+    font-size: 1.5rem;
+    font-weight: 700;
+}
+
+.modal-close {
+    font-size: 28px;
+    font-weight: bold;
+    cursor: pointer;
+    color: white;
+    opacity: 0.8;
+    transition: opacity 0.2s ease;
+    line-height: 1;
+    padding: 5px;
+}
+
+.modal-close:hover {
+    opacity: 1;
+}
+
+.modal-body {
+    padding: 30px;
+}
+
+.candidate-detail-grid {
+    display: grid;
+    gap: 30px;
+}
+
+.detail-section {
+    background: #f8fafc;
+    border-radius: 8px;
+    padding: 24px;
+    border-left: 4px solid #3b82f6;
+}
+
+.detail-section h3 {
+    margin: 0 0 20px 0;
+    color: #1e40af;
+    font-size: 1.2rem;
+    font-weight: 700;
+    border-bottom: 2px solid #e5e7eb;
+    padding-bottom: 8px;
+}
+
+.detail-item {
+    display: flex;
+    margin-bottom: 12px;
+    align-items: flex-start;
+}
+
+.detail-label {
+    font-weight: 600;
+    color: #374151;
+    min-width: 140px;
+    margin-right: 12px;
+    flex-shrink: 0;
+}
+
+.detail-item span:last-child {
+    color: #1f2937;
+    flex: 1;
+}
+
+/* 政策スタンス専用スタイル */
+.policy-section {
+    border-left-color: #059669;
+}
+
+.policy-section h3 {
+    color: #059669;
+}
+
+.policy-grid {
+    display: grid;
+    gap: 16px;
+}
+
+.policy-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 16px;
+    background: white;
+    border-radius: 6px;
+    border: 1px solid #e5e7eb;
+}
+
+.policy-label {
+    font-weight: 500;
+    color: #374151;
+    flex: 1;
+    margin-right: 12px;
+}
+
+.policy-stance {
+    font-weight: 600;
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 0.85rem;
+    white-space: nowrap;
+}
+
+.policy-stance.support {
+    background: #dcfce7;
+    color: #166534;
+}
+
+.policy-stance.oppose {
+    background: #fee2e2;
+    color: #991b1b;
+}
+
+.policy-stance.neutral {
+    background: #f3f4f6;
+    color: #374151;
+}
+
+/* メッセージセクション */
+.message-section {
+    border-left-color: #7c3aed;
+}
+
+.message-section h3 {
+    color: #7c3aed;
+}
+
+.message-item {
+    margin-bottom: 20px;
+}
+
+.message-item h4 {
+    margin: 0 0 8px 0;
+    color: #4c1d95;
+    font-size: 1rem;
+    font-weight: 600;
+}
+
+.message-item p {
+    margin: 0;
+    color: #374151;
+    line-height: 1.6;
+    background: white;
+    padding: 16px;
+    border-radius: 6px;
+    border: 1px solid #e5e7eb;
+}
+
+/* レスポンシブ対応 */
+@media (max-width: 768px) {
+    .modal {
+        padding: 10px;
+    }
+    
+    .modal-content {
+        max-height: 95vh;
+    }
+    
+    .modal-header {
+        padding: 20px;
+    }
+    
+    .modal-header h2 {
+        font-size: 1.3rem;
+    }
+    
+    .modal-body {
+        padding: 20px;
+    }
+    
+    .detail-section {
+        padding: 20px;
+    }
+    
+    .detail-item {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    
+    .detail-label {
+        min-width: auto;
+        margin-bottom: 4px;
+        margin-right: 0;
+    }
+    
+    .policy-item {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 8px;
+    }
+    
+    .policy-stance {
+        align-self: flex-end;
+    }
+}
+
+/* 候補者カードのクリック可能スタイル */
+.candidate-card {
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.candidate-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+}
+
+.candidate-card:active {
+    transform: translateY(-2px);
+}
+
