@@ -534,3 +534,144 @@ function hideError() {
     }
 }
 
+
+
+/**
+ * 政策比較テーブルの生成
+ */
+function generatePolicyComparisonTable() {
+    const container = document.getElementById('policy-comparison-container');
+    if (!container || candidatesData.length === 0) return;
+    
+    // 政策項目の抽出
+    const policyItems = extractPolicyItems();
+    if (policyItems.length === 0) {
+        container.innerHTML = '<div class="policy-loading"><p>政策比較データがありません</p></div>';
+        return;
+    }
+    
+    // テーブルの生成
+    const table = document.createElement('table');
+    table.className = 'policy-table';
+    
+    // ヘッダー行の生成
+    const headerRow = document.createElement('tr');
+    
+    // 政策項目列のヘッダー
+    const policyHeader = document.createElement('th');
+    policyHeader.textContent = '政策項目';
+    headerRow.appendChild(policyHeader);
+    
+    // 候補者列のヘッダー
+    candidatesData.forEach(candidate => {
+        const candidateHeader = document.createElement('th');
+        candidateHeader.innerHTML = `
+            <div class="candidate-header">
+                <div class="candidate-name-small">${candidate.name}</div>
+                <span class="candidate-tag-small ${candidate.status === '現職' ? 'incumbent' : 'newcomer'}">
+                    ${candidate.status}
+                </span>
+            </div>
+        `;
+        headerRow.appendChild(candidateHeader);
+    });
+    
+    table.appendChild(headerRow);
+    
+    // 政策項目行の生成
+    policyItems.forEach(policyItem => {
+        const row = document.createElement('tr');
+        
+        // 政策項目名
+        const policyCell = document.createElement('td');
+        policyCell.textContent = policyItem;
+        row.appendChild(policyCell);
+        
+        // 各候補者のスタンス
+        candidatesData.forEach(candidate => {
+            const stanceCell = document.createElement('td');
+            stanceCell.className = 'policy-stance-cell';
+            
+            const stance = candidate.policies[policyItem] || '未回答';
+            const stanceClass = getStanceClass(stance);
+            const stanceText = getStanceDisplayText(stance);
+            
+            stanceCell.innerHTML = `
+                <span class="policy-stance-badge ${stanceClass}">${stanceText}</span>
+            `;
+            
+            row.appendChild(stanceCell);
+        });
+        
+        table.appendChild(row);
+    });
+    
+    container.innerHTML = '';
+    container.appendChild(table);
+}
+
+/**
+ * 政策項目の抽出
+ */
+function extractPolicyItems() {
+    const policySet = new Set();
+    
+    candidatesData.forEach(candidate => {
+        if (candidate.policies) {
+            Object.keys(candidate.policies).forEach(policy => {
+                if (policy && policy.trim()) {
+                    policySet.add(policy.trim());
+                }
+            });
+        }
+    });
+    
+    return Array.from(policySet).sort();
+}
+
+/**
+ * スタンスのクラス名を取得
+ */
+function getStanceClass(stance) {
+    if (!stance || stance === '未回答') return 'no-response';
+    
+    const lowerStance = stance.toLowerCase();
+    if (lowerStance.includes('積極的に推進') || lowerStance.includes('賛成') || lowerStance.includes('支持')) {
+        return 'support';
+    } else if (lowerStance.includes('反対') || lowerStance.includes('慎重')) {
+        return 'oppose';
+    } else {
+        return 'neutral';
+    }
+}
+
+/**
+ * スタンスの表示テキストを取得
+ */
+function getStanceDisplayText(stance) {
+    if (!stance || stance === '未回答') return '未回答';
+    
+    // 長いテキストを短縮
+    if (stance.length > 15) {
+        if (stance.includes('積極的に推進')) return '積極推進';
+        if (stance.includes('反対')) return '反対';
+        if (stance.includes('慎重')) return '慎重';
+        return stance.substring(0, 12) + '...';
+    }
+    
+    return stance;
+}
+
+/**
+ * displayCandidates関数を拡張して政策比較も更新
+ */
+const originalDisplayCandidates = displayCandidates;
+displayCandidates = function() {
+    originalDisplayCandidates.call(this);
+    
+    // 政策比較テーブルも更新
+    setTimeout(() => {
+        generatePolicyComparisonTable();
+    }, 100);
+};
+

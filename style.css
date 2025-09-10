@@ -616,13 +616,13 @@ section {
     
     /* 候補者グリッド */
     .candidate-grid {
-        grid-template-columns: 1fr;
-        gap: 1rem;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 0.75rem;
     }
     
     .candidate-card {
         margin: 0 auto;
-        max-width: 400px;
+        max-width: none;
     }
     
     /* モーダル */
@@ -701,6 +701,162 @@ section {
         flex-direction: column;
         align-items: flex-start;
         gap: 0.5rem;
+    }
+}
+
+
+
+/* ===== 政策比較セクション ===== */
+.policy-comparison-section {
+    background: #f9fafb;
+    border-top: 1px solid #e5e7eb;
+    border-bottom: 1px solid #e5e7eb;
+}
+
+.policy-comparison-container {
+    overflow-x: auto;
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+}
+
+.policy-loading {
+    text-align: center;
+    padding: 3rem;
+    color: #6b7280;
+}
+
+.policy-table {
+    width: 100%;
+    border-collapse: collapse;
+    min-width: 800px;
+}
+
+.policy-table th,
+.policy-table td {
+    padding: 1rem;
+    text-align: left;
+    border-bottom: 1px solid #e5e7eb;
+    vertical-align: top;
+}
+
+.policy-table th {
+    background: #f9fafb;
+    font-weight: 600;
+    color: #374151;
+    position: sticky;
+    top: 0;
+    z-index: 10;
+}
+
+.policy-table th:first-child {
+    background: #2c5aa0;
+    color: white;
+    font-weight: 700;
+    min-width: 200px;
+}
+
+.policy-table td:first-child {
+    background: #f9fafb;
+    font-weight: 600;
+    color: #374151;
+    border-right: 2px solid #e5e7eb;
+}
+
+.policy-stance-cell {
+    text-align: center;
+    min-width: 120px;
+}
+
+.policy-stance-badge {
+    display: inline-block;
+    padding: 0.375rem 0.75rem;
+    border-radius: 20px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-align: center;
+    min-width: 80px;
+}
+
+.policy-stance-badge.support {
+    background: #dcfce7;
+    color: #166534;
+}
+
+.policy-stance-badge.oppose {
+    background: #fee2e2;
+    color: #dc2626;
+}
+
+.policy-stance-badge.neutral {
+    background: #f3f4f6;
+    color: #6b7280;
+}
+
+.policy-stance-badge.no-response {
+    background: #fef3c7;
+    color: #92400e;
+}
+
+.candidate-header {
+    text-align: center;
+    padding: 0.75rem 0.5rem;
+}
+
+.candidate-header .candidate-name-small {
+    font-weight: 700;
+    color: #111827;
+    font-size: 0.9rem;
+    margin-bottom: 0.25rem;
+}
+
+.candidate-header .candidate-tag-small {
+    display: inline-block;
+    padding: 0.125rem 0.5rem;
+    border-radius: 12px;
+    font-size: 0.625rem;
+    font-weight: 600;
+}
+
+.candidate-tag-small.incumbent {
+    background: #dbeafe;
+    color: #1e40af;
+}
+
+.candidate-tag-small.newcomer {
+    background: #dcfce7;
+    color: #166534;
+}
+
+/* モバイル対応 */
+@media (max-width: 768px) {
+    .policy-comparison-container {
+        margin: 0 -16px;
+        border-radius: 0;
+    }
+    
+    .policy-table th,
+    .policy-table td {
+        padding: 0.75rem 0.5rem;
+        font-size: 0.875rem;
+    }
+    
+    .policy-table th:first-child {
+        min-width: 150px;
+    }
+    
+    .policy-stance-cell {
+        min-width: 100px;
+    }
+    
+    .policy-stance-badge {
+        padding: 0.25rem 0.5rem;
+        font-size: 0.7rem;
+        min-width: 70px;
+    }
+    
+    .candidate-header .candidate-name-small {
+        font-size: 0.8rem;
     }
 }
 
