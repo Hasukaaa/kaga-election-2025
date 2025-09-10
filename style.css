@@ -1,114 +1,102 @@
-/* --- Global Settings --- */
-:root {
-    --primary-color: #0d47a1; /* A deeper, more official blue */
-    --accent-color: #ffab40; /* A vibrant accent for call-to-actions */
-    --background-color: #f8f9fa; /* A very light grey for the background */
-    --text-color: #212529; /* Standard dark text for readability */
-    --light-text-color: #6c757d; /* For subtitles and secondary info */
-    --card-bg-color: #ffffff;
-    --border-color: #dee2e6;
-    --success-color: #28a745;
-    --warning-color: #ffc107;
-    --danger-color: #dc3545;
-    --border-radius: 12px;
-    --shadow: 0 4px 15px rgba(0, 0, 0, 0.07);
-    --shadow-hover: 0 12px 24px rgba(0,0,0,0.1);
-    --font-family: 'Noto Sans JP', sans-serif;
-    --transition: all 0.3s ease;
-}
+/**
+ * 加賀市議会議員選挙2025 特設サイト
+ * スタイルシート - UI/UX改善版
+ */
 
+/* ===== リセット・基本設定 ===== */
 * {
+    margin: 0;
+    padding: 0;
     box-sizing: border-box;
 }
 
+html {
+    scroll-behavior: smooth;
+}
+
 body {
-    font-family: var(--font-family);
-    line-height: 1.7;
-    background-color: var(--background-color);
-    color: var(--text-color);
-    margin: 0;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
+    font-family: 'Noto Sans JP', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    line-height: 1.6;
+    color: #333;
+    background-color: #f8f9fa;
 }
 
 .container {
-    max-width: 1280px;
+    max-width: 1200px;
     margin: 0 auto;
-    padding: 0 24px;
+    padding: 0 20px;
 }
 
-a {
-    text-decoration: none;
-    color: inherit;
-}
-
-/* --- Header --- */
+/* ===== ヘッダー（スマート化） ===== */
 .header {
-    background-color: var(--card-bg-color);
-    padding: 1.5rem 0;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
-    border-bottom: 4px solid var(--primary-color);
+    background: linear-gradient(135deg, #2c5aa0 0%, #1e3a8a 100%);
+    color: white;
+    padding: 1rem 0;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
     position: sticky;
     top: 0;
-    z-index: 1000;
+    z-index: 100;
 }
 
 .header .container {
     display: flex;
     justify-content: space-between;
     align-items: center;
+    flex-wrap: wrap;
+    gap: 1rem;
 }
 
 .logo h1 {
-    margin: 0;
-    font-size: 1.8rem;
-    color: var(--primary-color);
+    font-size: 1.5rem;
     font-weight: 700;
+    margin-bottom: 0.25rem;
 }
 
 .logo .subtitle {
-    margin: 0;
-    font-size: 0.9rem;
-    color: var(--light-text-color);
+    font-size: 0.875rem;
+    opacity: 0.9;
+    font-weight: 300;
 }
 
 .nav {
     display: flex;
+    gap: 1.5rem;
 }
 
 .nav-link {
-    margin-left: 25px;
-    font-weight: 700;
-    color: var(--light-text-color);
-    padding: 8px 0;
-    border-bottom: 2px solid transparent;
-    transition: var(--transition);
-    cursor: pointer;
+    color: white;
+    text-decoration: none;
+    padding: 0.5rem 1rem;
+    border-radius: 6px;
+    transition: all 0.3s ease;
+    font-weight: 500;
+    font-size: 0.9rem;
 }
 
-.nav-link:hover, .nav-link.active {
-    color: var(--primary-color);
-    border-bottom-color: var(--primary-color);
+.nav-link:hover,
+.nav-link.active {
+    background-color: rgba(255,255,255,0.2);
+    transform: translateY(-1px);
 }
 
-/* --- Loading and Error States --- */
-.loading-container, .error-container {
+/* ===== ローディング・エラー ===== */
+.loading-container {
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    min-height: 400px;
+    padding: 4rem 2rem;
     text-align: center;
 }
 
 .loading-spinner {
-    width: 50px;
-    height: 50px;
-    border: 4px solid var(--border-color);
-    border-top: 4px solid var(--primary-color);
+    width: 40px;
+    height: 40px;
+    border: 4px solid #e5e7eb;
+    border-top: 4px solid #2c5aa0;
     border-radius: 50%;
     animation: spin 1s linear infinite;
-    margin-bottom: 20px;
+    margin-bottom: 1rem;
 }
 
 @keyframes spin {
@@ -116,137 +104,135 @@ a {
     100% { transform: rotate(360deg); }
 }
 
+.error-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 4rem 2rem;
+}
+
 .error-content {
-    background-color: var(--card-bg-color);
-    padding: 40px;
-    border-radius: var(--border-radius);
-    box-shadow: var(--shadow);
+    background: white;
+    padding: 2rem;
+    border-radius: 12px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+    text-align: center;
     max-width: 500px;
 }
 
 .error-content h3 {
-    color: var(--danger-color);
-    margin-bottom: 15px;
+    color: #dc2626;
+    margin-bottom: 1rem;
+    font-size: 1.25rem;
 }
 
 .retry-button {
-    background-color: var(--primary-color);
+    background: #2c5aa0;
     color: white;
     border: none;
-    padding: 12px 24px;
-    border-radius: var(--border-radius);
+    padding: 0.75rem 1.5rem;
+    border-radius: 6px;
     cursor: pointer;
-    font-weight: 700;
-    transition: var(--transition);
-    margin-top: 20px;
+    font-weight: 500;
+    margin-top: 1rem;
+    transition: background-color 0.3s ease;
 }
 
 .retry-button:hover {
-    background-color: #0a3d91;
-    transform: translateY(-2px);
+    background: #1e3a8a;
 }
 
-/* --- Main Content --- */
-.candidate-section, .policy-section, .voting-info-section {
-    padding: 60px 0;
+/* ===== セクション共通 ===== */
+section {
+    padding: 3rem 0;
 }
 
 .section-header {
     text-align: center;
-    margin-bottom: 50px;
+    margin-bottom: 3rem;
 }
 
 .section-header h2 {
-    font-size: 2.5rem;
-    margin-bottom: 10px;
-    color: var(--primary-color);
+    font-size: 2rem;
+    color: #2c5aa0;
+    margin-bottom: 1rem;
+    font-weight: 700;
 }
 
-.section-header p {
-    font-size: 1.1rem;
-    color: var(--light-text-color);
-    max-width: 600px;
-    margin: 0 auto 20px;
+.section-description {
+    color: #6b7280;
+    font-size: 1rem;
+    margin-bottom: 0.5rem;
 }
 
 .candidate-count {
-    font-size: 1rem;
-    color: var(--primary-color);
-    font-weight: 700;
-    background-color: var(--card-bg-color);
-    padding: 10px 20px;
-    border-radius: 25px;
-    display: inline-block;
-    box-shadow: var(--shadow);
+    color: #2c5aa0;
+    font-weight: 600;
+    font-size: 1.1rem;
 }
 
-/* --- Filter Section --- */
-.filter-section {
+/* ===== コントロール（フィルター・ソート） ===== */
+.controls {
     display: flex;
     justify-content: center;
-    gap: 30px;
-    margin-bottom: 40px;
+    gap: 2rem;
+    margin-bottom: 3rem;
     flex-wrap: wrap;
 }
 
-.filter-group {
+.control-group {
     display: flex;
     align-items: center;
-    gap: 10px;
+    gap: 0.5rem;
 }
 
-.filter-group label {
-    font-weight: 700;
-    color: var(--text-color);
+.control-group label {
+    font-weight: 500;
+    color: #374151;
+    font-size: 0.9rem;
 }
 
-.filter-select {
-    padding: 8px 15px;
-    border: 2px solid var(--border-color);
-    border-radius: var(--border-radius);
-    background-color: var(--card-bg-color);
-    color: var(--text-color);
-    font-family: var(--font-family);
+.control-group select {
+    padding: 0.5rem 1rem;
+    border: 2px solid #e5e7eb;
+    border-radius: 6px;
+    background: white;
+    font-size: 0.9rem;
     cursor: pointer;
-    transition: var(--transition);
+    transition: border-color 0.3s ease;
 }
 
-.filter-select:focus {
+.control-group select:focus {
     outline: none;
-    border-color: var(--primary-color);
+    border-color: #2c5aa0;
 }
 
-/* --- Candidate Grid --- */
+/* ===== 候補者グリッド（15-20名対応） ===== */
 .candidate-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
-    gap: 30px;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 1.5rem;
+    margin-bottom: 2rem;
 }
 
-/* --- Candidate Card --- */
 .candidate-card {
-    background-color: var(--card-bg-color);
-    border-radius: var(--border-radius);
-    box-shadow: var(--shadow);
+    background: white;
+    border-radius: 12px;
     overflow: hidden;
-    transition: var(--transition);
-    display: flex;
-    flex-direction: column;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+    transition: all 0.3s ease;
     cursor: pointer;
-    opacity: 0;
     animation: fadeInUp 0.6s ease forwards;
+    opacity: 0;
+    transform: translateY(20px);
 }
 
 .candidate-card:hover {
-    transform: translateY(-8px);
-    box-shadow: var(--shadow-hover);
+    transform: translateY(-4px);
+    box-shadow: 0 8px 25px rgba(0,0,0,0.15);
 }
 
 @keyframes fadeInUp {
-    from {
-        opacity: 0;
-        transform: translateY(30px);
-    }
     to {
         opacity: 1;
         transform: translateY(0);
@@ -254,21 +240,17 @@ a {
 }
 
 .card-image-wrapper {
-    width: 100%;
-    padding-top: 100%; /* Creates a square aspect ratio */
     position: relative;
-    background-color: #eee;
+    height: 200px;
     overflow: hidden;
+    background: #f3f4f6;
 }
 
 .candidate-photo {
-    position: absolute;
-    top: 0;
-    left: 0;
     width: 100%;
     height: 100%;
     object-fit: cover;
-    transition: var(--transition);
+    transition: transform 0.3s ease;
 }
 
 .candidate-card:hover .candidate-photo {
@@ -276,230 +258,84 @@ a {
 }
 
 .candidate-info {
-    padding: 20px;
-    border-top: 1px solid var(--border-color);
-    text-align: center;
-    flex-grow: 1;
-    display: flex;
-    flex-direction: column;
+    padding: 1.25rem;
+}
+
+.tag {
+    display: inline-block;
+    padding: 0.25rem 0.75rem;
+    border-radius: 20px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    margin-bottom: 0.75rem;
+}
+
+.tag.incumbent {
+    background: #dbeafe;
+    color: #1e40af;
+}
+
+.tag.newcomer {
+    background: #dcfce7;
+    color: #166534;
 }
 
 .candidate-name {
-    margin: 10px 0 5px;
-    font-size: 1.3rem;
+    font-size: 1.25rem;
     font-weight: 700;
-    color: var(--text-color);
+    color: #111827;
+    margin-bottom: 0.5rem;
 }
 
 .candidate-details {
-    font-size: 0.9rem;
-    color: var(--light-text-color);
-    margin: 5px 0;
+    color: #6b7280;
+    font-size: 0.875rem;
+    line-height: 1.4;
+    margin-bottom: 0.75rem;
 }
 
 .candidate-catchphrase {
-    font-size: 0.95rem;
-    color: var(--light-text-color);
-    margin: 10px 0 0;
-    min-height: 3.4em;
-    flex-grow: 1;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-/* --- Tags --- */
-.tag {
-    font-size: 0.8rem;
-    padding: 5px 12px;
-    border-radius: 20px;
-    color: #fff;
-    font-weight: 700;
-    display: inline-block;
-    margin-bottom: 12px;
-}
-
-.tag.incumbent { /* 現職 */
-    background: linear-gradient(45deg, #0d47a1, #1976d2);
-}
-
-.tag.newcomer { /* 新人 */
-    background: linear-gradient(45deg, #1b5e20, #388e3c);
-}
-
-/* --- Policy Section --- */
-.policy-chart-container {
-    background-color: var(--card-bg-color);
-    padding: 40px;
-    border-radius: var(--border-radius);
-    box-shadow: var(--shadow);
-    text-align: center;
-}
-
-/* --- Voting Info Section --- */
-.voting-info-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-    gap: 30px;
-}
-
-.info-card {
-    background-color: var(--card-bg-color);
-    padding: 30px;
-    border-radius: var(--border-radius);
-    box-shadow: var(--shadow);
-    text-align: center;
-    transition: var(--transition);
-}
-
-.info-card:hover {
-    transform: translateY(-5px);
-    box-shadow: var(--shadow-hover);
-}
-
-.info-card h3 {
-    color: var(--primary-color);
-    margin-bottom: 15px;
-    font-size: 1.3rem;
-}
-
-.info-card p {
-    color: var(--text-color);
-    line-height: 1.6;
-}
-
-/* --- Footer --- */
-.footer {
-    background-color: #343a40;
-    color: #f8f9fa;
-    text-align: center;
-    padding: 40px 0;
-    margin-top: 60px;
-}
-
-.footer p {
-    margin: 0.5em 0;
-    color: #ced4da;
-}
-
-.data-update {
+    color: #374151;
     font-size: 0.9rem;
     font-style: italic;
+    line-height: 1.4;
 }
 
-/* --- Responsive Design --- */
-@media (max-width: 768px) {
-    .header .container {
-        flex-direction: column;
-        gap: 15px;
-    }
-    
-    .nav {
-        justify-content: center;
-    }
-    
-    .nav-link {
-        margin: 0 10px;
-    }
-
-    .section-header h2 {
-        font-size: 2rem;
-    }
-    
-    .candidate-grid {
-        grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-        gap: 20px;
-    }
-    
-    .filter-section {
-        flex-direction: column;
-        align-items: center;
-        gap: 15px;
-    }
-    
-    .voting-info-grid {
-        grid-template-columns: 1fr;
-        gap: 20px;
-    }
-}
-
-@media (max-width: 480px) {
-    .container {
-        padding: 0 16px;
-    }
-    
-    .candidate-grid {
-        grid-template-columns: 1fr 1fr;
-        gap: 15px;
-    }
-    
-    .candidate-name {
-        font-size: 1.1rem;
-    }
-    
-    .candidate-catchphrase {
-        font-size: 0.85rem;
-    }
-    
-    .section-header h2 {
-        font-size: 1.8rem;
-    }
-    
-    .info-card {
-        padding: 20px;
-    }
-}
-
-/* --- Utility Classes --- */
-.hidden {
-    display: none !important;
-}
-
-.fade-in {
-    animation: fadeIn 0.5s ease;
-}
-
-@keyframes fadeIn {
-    from { opacity: 0; }
-    to { opacity: 1; }
-}
-
-
-/* --- Modal Styles --- */
+/* ===== モーダル ===== */
 .modal {
+    display: none;
     position: fixed;
-    top: 0;
+    z-index: 1000;
     left: 0;
+    top: 0;
     width: 100%;
     height: 100%;
-    background-color: rgba(0, 0, 0, 0.7);
-    z-index: 1000;
-    display: flex;
-    justify-content: center;
+    background-color: rgba(0,0,0,0.5);
+    backdrop-filter: blur(4px);
     align-items: center;
-    padding: 20px;
-    box-sizing: border-box;
+    justify-content: center;
+    padding: 1rem;
 }
 
 .modal-content {
     background: white;
-    border-radius: 12px;
-    max-width: 900px;
+    border-radius: 16px;
+    max-width: 800px;
     width: 100%;
     max-height: 90vh;
     overflow-y: auto;
-    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+    box-shadow: 0 20px 60px rgba(0,0,0,0.3);
     animation: modalSlideIn 0.3s ease;
 }
 
 @keyframes modalSlideIn {
     from {
         opacity: 0;
-        transform: translateY(-50px) scale(0.9);
+        transform: scale(0.9) translateY(-20px);
     }
     to {
         opacity: 1;
-        transform: translateY(0) scale(1);
+        transform: scale(1) translateY(0);
     }
 }
 
@@ -507,115 +343,119 @@ a {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 24px 30px;
+    padding: 1.5rem 2rem;
     border-bottom: 1px solid #e5e7eb;
-    background: linear-gradient(135deg, #1e40af 0%, #3b82f6 100%);
-    color: white;
-    border-radius: 12px 12px 0 0;
+    background: #f9fafb;
+    border-radius: 16px 16px 0 0;
 }
 
 .modal-header h2 {
-    margin: 0;
+    color: #111827;
     font-size: 1.5rem;
     font-weight: 700;
 }
 
 .modal-close {
-    font-size: 28px;
-    font-weight: bold;
+    font-size: 1.5rem;
     cursor: pointer;
-    color: white;
-    opacity: 0.8;
-    transition: opacity 0.2s ease;
-    line-height: 1;
-    padding: 5px;
+    color: #6b7280;
+    transition: color 0.3s ease;
+    padding: 0.25rem;
 }
 
 .modal-close:hover {
-    opacity: 1;
+    color: #374151;
 }
 
 .modal-body {
-    padding: 30px;
+    padding: 2rem;
 }
 
-.candidate-detail-grid {
+.modal-candidate-info {
     display: grid;
-    gap: 30px;
+    gap: 2rem;
 }
 
-.detail-section {
-    background: #f8fafc;
-    border-radius: 8px;
-    padding: 24px;
-    border-left: 4px solid #3b82f6;
-}
-
-.detail-section h3 {
-    margin: 0 0 20px 0;
-    color: #1e40af;
-    font-size: 1.2rem;
-    font-weight: 700;
-    border-bottom: 2px solid #e5e7eb;
-    padding-bottom: 8px;
-}
-
-.detail-item {
+.modal-photo-section {
     display: flex;
-    margin-bottom: 12px;
+    gap: 1.5rem;
     align-items: flex-start;
 }
 
-.detail-label {
-    font-weight: 600;
-    color: #374151;
-    min-width: 140px;
-    margin-right: 12px;
-    flex-shrink: 0;
+.modal-photo-section img {
+    width: 120px;
+    height: 120px;
+    border-radius: 12px;
+    object-fit: cover;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
 }
 
-.detail-item span:last-child {
-    color: #1f2937;
+.modal-basic-info {
     flex: 1;
 }
 
-/* 政策スタンス専用スタイル */
-.policy-section {
-    border-left-color: #059669;
+.modal-basic-info .tag {
+    margin-bottom: 1rem;
 }
 
-.policy-section h3 {
-    color: #059669;
+.modal-section {
+    margin-bottom: 2rem;
+}
+
+.modal-section h3 {
+    color: #2c5aa0;
+    font-size: 1.1rem;
+    font-weight: 600;
+    margin-bottom: 1rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 2px solid #e5e7eb;
+}
+
+.modal-section p {
+    margin-bottom: 0.75rem;
+    line-height: 1.6;
+}
+
+.modal-section strong {
+    color: #374151;
+    font-weight: 600;
+}
+
+.modal-section a {
+    color: #2c5aa0;
+    text-decoration: none;
+}
+
+.modal-section a:hover {
+    text-decoration: underline;
 }
 
 .policy-grid {
     display: grid;
-    gap: 16px;
+    gap: 0.75rem;
 }
 
 .policy-item {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 12px 16px;
-    background: white;
-    border-radius: 6px;
-    border: 1px solid #e5e7eb;
+    padding: 0.75rem;
+    background: #f9fafb;
+    border-radius: 8px;
+    border-left: 4px solid #e5e7eb;
 }
 
-.policy-label {
+.policy-name {
     font-weight: 500;
     color: #374151;
     flex: 1;
-    margin-right: 12px;
 }
 
 .policy-stance {
-    font-weight: 600;
-    padding: 4px 12px;
+    padding: 0.25rem 0.75rem;
     border-radius: 20px;
-    font-size: 0.85rem;
-    white-space: nowrap;
+    font-size: 0.75rem;
+    font-weight: 600;
 }
 
 .policy-stance.support {
@@ -625,48 +465,169 @@ a {
 
 .policy-stance.oppose {
     background: #fee2e2;
-    color: #991b1b;
+    color: #dc2626;
 }
 
 .policy-stance.neutral {
     background: #f3f4f6;
+    color: #6b7280;
+}
+
+/* ===== 投票情報セクション ===== */
+.voting-section {
+    background: white;
+    border-top: 1px solid #e5e7eb;
+}
+
+.voting-section h2 {
+    text-align: center;
+    color: #2c5aa0;
+    font-size: 2rem;
+    margin-bottom: 3rem;
+    font-weight: 700;
+}
+
+.voting-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 1.5rem;
+}
+
+.voting-card {
+    background: #f9fafb;
+    padding: 1.5rem;
+    border-radius: 12px;
+    border-left: 4px solid #2c5aa0;
+    transition: transform 0.3s ease;
+}
+
+.voting-card:hover {
+    transform: translateY(-2px);
+}
+
+.voting-card h3 {
+    color: #2c5aa0;
+    font-size: 1.1rem;
+    font-weight: 600;
+    margin-bottom: 0.75rem;
+}
+
+.voting-card p {
     color: #374151;
+    line-height: 1.6;
 }
 
-/* メッセージセクション */
-.message-section {
-    border-left-color: #7c3aed;
+/* ===== フッター ===== */
+.footer {
+    background: #1f2937;
+    color: white;
+    padding: 2rem 0;
 }
 
-.message-section h3 {
-    color: #7c3aed;
+.footer-content {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 2rem;
+    align-items: start;
 }
 
-.message-item {
-    margin-bottom: 20px;
-}
-
-.message-item h4 {
-    margin: 0 0 8px 0;
-    color: #4c1d95;
-    font-size: 1rem;
+.footer-info h3 {
+    font-size: 1.1rem;
+    margin-bottom: 0.5rem;
     font-weight: 600;
 }
 
-.message-item p {
-    margin: 0;
-    color: #374151;
-    line-height: 1.6;
-    background: white;
-    padding: 16px;
-    border-radius: 6px;
-    border: 1px solid #e5e7eb;
+.footer-info p {
+    color: #d1d5db;
+    font-size: 0.9rem;
 }
 
-/* レスポンシブ対応 */
+.footer-meta {
+    text-align: right;
+}
+
+.footer-meta p {
+    color: #9ca3af;
+    font-size: 0.8rem;
+    margin-bottom: 0.25rem;
+}
+
+.disclaimer {
+    font-style: italic;
+}
+
+/* ===== レスポンシブデザイン ===== */
 @media (max-width: 768px) {
+    .container {
+        padding: 0 16px;
+    }
+    
+    /* ヘッダー */
+    .header {
+        padding: 0.75rem 0;
+    }
+    
+    .header .container {
+        flex-direction: column;
+        text-align: center;
+        gap: 0.75rem;
+    }
+    
+    .logo h1 {
+        font-size: 1.25rem;
+    }
+    
+    .logo .subtitle {
+        font-size: 0.8rem;
+    }
+    
+    .nav {
+        gap: 1rem;
+    }
+    
+    .nav-link {
+        padding: 0.4rem 0.8rem;
+        font-size: 0.85rem;
+    }
+    
+    /* セクション */
+    section {
+        padding: 2rem 0;
+    }
+    
+    .section-header h2 {
+        font-size: 1.5rem;
+    }
+    
+    .section-header {
+        margin-bottom: 2rem;
+    }
+    
+    /* コントロール */
+    .controls {
+        flex-direction: column;
+        gap: 1rem;
+        margin-bottom: 2rem;
+    }
+    
+    .control-group {
+        justify-content: center;
+    }
+    
+    /* 候補者グリッド */
+    .candidate-grid {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+    }
+    
+    .candidate-card {
+        margin: 0 auto;
+        max-width: 400px;
+    }
+    
+    /* モーダル */
     .modal {
-        padding: 10px;
+        padding: 0.5rem;
     }
     
     .modal-content {
@@ -674,55 +635,72 @@ a {
     }
     
     .modal-header {
-        padding: 20px;
+        padding: 1rem 1.5rem;
     }
     
     .modal-header h2 {
-        font-size: 1.3rem;
+        font-size: 1.25rem;
     }
     
     .modal-body {
-        padding: 20px;
+        padding: 1.5rem;
     }
     
-    .detail-section {
-        padding: 20px;
-    }
-    
-    .detail-item {
+    .modal-photo-section {
         flex-direction: column;
-        align-items: flex-start;
+        text-align: center;
     }
     
-    .detail-label {
-        min-width: auto;
-        margin-bottom: 4px;
-        margin-right: 0;
+    .modal-photo-section img {
+        width: 100px;
+        height: 100px;
+        margin: 0 auto;
+    }
+    
+    /* 投票情報 */
+    .voting-grid {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+    }
+    
+    .voting-section h2 {
+        font-size: 1.5rem;
+        margin-bottom: 2rem;
+    }
+    
+    /* フッター */
+    .footer-content {
+        grid-template-columns: 1fr;
+        text-align: center;
+        gap: 1rem;
+    }
+    
+    .footer-meta {
+        text-align: center;
+    }
+}
+
+@media (max-width: 480px) {
+    .candidate-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .candidate-card {
+        max-width: 100%;
+    }
+    
+    .modal-header {
+        padding: 0.75rem 1rem;
+    }
+    
+    .modal-body {
+        padding: 1rem;
     }
     
     .policy-item {
         flex-direction: column;
         align-items: flex-start;
-        gap: 8px;
+        gap: 0.5rem;
     }
-    
-    .policy-stance {
-        align-self: flex-end;
-    }
-}
-
-/* 候補者カードのクリック可能スタイル */
-.candidate-card {
-    cursor: pointer;
-    transition: all 0.3s ease;
-}
-
-.candidate-card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
-}
-
-.candidate-card:active {
-    transform: translateY(-2px);
 }
 
