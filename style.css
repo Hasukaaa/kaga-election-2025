@@ -921,6 +921,7 @@ section {
 
 .policy-answers-scroll {
     display: flex;
+    flex-direction: row;
     gap: 1rem;
     padding: 1.5rem;
     overflow-x: auto;
@@ -936,11 +937,14 @@ section {
 /* 候補者回答カード */
 .candidate-answer-card {
     flex: 0 0 250px;
+    display: flex;
+    flex-direction: column;
     background: #f9fafb;
     border-radius: 8px;
     padding: 1rem;
     border: 2px solid #e5e7eb;
     transition: all 0.3s ease;
+    min-height: 140px;
 }
 
 .candidate-answer-card:hover {
