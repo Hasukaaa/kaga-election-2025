@@ -78,7 +78,36 @@ async function loadCandidateData() {
         showLoading();
         hideError();
         
-        // まずダミーデータを使用してテスト
+        // 実際のGoogle Sheetsからデータを取得
+        console.log('Google Sheetsからデータを読み込み中...');
+        const candidates = await fetchSpreadsheetData();
+        
+        if (candidates && candidates.length > 0) {
+            console.log(`${candidates.length}名の候補者データを読み込みました`);
+            candidatesData = candidates;
+            filteredCandidates = [...candidates];
+            displayCandidates();
+            updateCandidateCount(candidates.length);
+            hideLoading();
+            updateLastUpdated();
+            generatePolicyComparisonTable();
+        } else {
+            console.log('Google Sheetsからデータが取得できませんでした。ダミーデータを使用します。');
+            // フォールバックとしてダミーデータを使用
+            const dummyData = getDummyData();
+            candidatesData = dummyData;
+            filteredCandidates = [...dummyData];
+            displayCandidates();
+            updateCandidateCount(dummyData.length);
+            hideLoading();
+            updateLastUpdated();
+            generatePolicyComparisonTable();
+        }
+    } catch (error) {
+        console.error('候補者データの読み込みエラー:', error);
+        console.log('エラーが発生しました。ダミーデータを使用します。');
+        
+        // エラー時はダミーデータを使用
         const dummyData = getDummyData();
         candidatesData = dummyData;
         filteredCandidates = [...dummyData];
@@ -86,24 +115,7 @@ async function loadCandidateData() {
         updateCandidateCount(dummyData.length);
         hideLoading();
         updateLastUpdated();
-        
-        // 実際のデータ取得は後で実装
-        /*
-        const candidates = await fetchSpreadsheetData();
-        if (candidates && candidates.length > 0) {
-            candidatesData = candidates;
-            filteredCandidates = [...candidates];
-            displayCandidates();
-            updateCandidateCount(candidates.length);
-            hideLoading();
-            updateLastUpdated();
-        } else {
-            showError('候補者データが見つかりませんでした。');
-        }
-        */
-    } catch (error) {
-        console.error('候補者データの読み込みエラー:', error);
-        showError('候補者データの読み込み中にエラーが発生しました。');
+        generatePolicyComparisonTable();
     }
 }
 
@@ -331,10 +343,49 @@ function createCandidateObject(headers, values) {
     
     // 政策スタンスの設定
     candidate.policies = {};
+    
+    // 政策項目のマッピング（実際のフォームの項目名に対応）
+    const policyMapping = {
+        '政策1: 子育て支援・教育予算の拡充について': '子育て支援の充実',
+        '政策2: 地域産業（伝統工芸・観光業）の振興について': '観光振興',
+        '政策3: 高齢者福祉・医療制度の充実について': '高齢者福祉の向上',
+        '政策4: 防災・減災対策の強化について': '防災対策の強化',
+        '政策5: 市の財政健全化について': '財政健全化',
+        '政策6: デジタル化・DX推進について': 'デジタル化推進',
+        '政策7: 環境保護・脱炭素社会の実現について': '環境保護',
+        '政策8: 若者の定住促進・人口減少対策について': '人口減少対策'
+    };
+    
+    // 政策スタンスの値のマッピング
+    const stanceMapping = {
+        '積極的に推進すべき': '積極的に推進',
+        'ある程度推進すべき': '賛成',
+        '現状維持が適切': '中立',
+        '慎重に検討すべき': '慎重',
+        '優先度は低い': '反対'
+    };
+    
     headers.forEach((header, index) => {
-        if (header.startsWith('政策') && values[index]) {
-            const policyKey = header.replace(/政策\d+:\s*/, '');
-            candidate.policies[policyKey] = values[index];
+        const mappedPolicy = policyMapping[header];
+        if (mappedPolicy && values[index]) {
+            const mappedStance = stanceMapping[values[index]] || values[index];
+            candidate.policies[mappedPolicy] = mappedStance;
+        }
+    });
+    
+    // サイトで使用する政策項目のデフォルト値を設定
+    const defaultPolicies = {
+        '子育て支援の充実': '未回答',
+        '教育環境の整備': '未回答',
+        '観光振興': '未回答',
+        '防災対策の強化': '未回答',
+        '高齢者福祉の向上': '未回答'
+    };
+    
+    // デフォルト政策項目を設定（回答がない場合）
+    Object.keys(defaultPolicies).forEach(policy => {
+        if (!candidate.policies[policy]) {
+            candidate.policies[policy] = defaultPolicies[policy];
         }
     });
     
